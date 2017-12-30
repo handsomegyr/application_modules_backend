@@ -1,0 +1,200 @@
+                        <!-- BEGIN VALIDATION STATES-->
+
+						<div class="portlet box blue">
+
+							<div class="portlet-title">
+
+								<div class="caption"><i class="icon-reorder"></i>{{.formName}}</div>
+
+								<div class="tools">
+
+									<a href="javascript:;" class="collapse"></a>
+
+								</div>
+
+							</div>							
+							<div class="portlet-body form" style="display: block;">
+
+								<!-- BEGIN FORM-->
+
+								<form action="{{.form_act}}" enctype="multipart/form-data" method="post" id="form_sample_2" class="form-horizontal form-bordered form-row-stripped">
+
+									<div class="alert alert-error hide">
+
+										<button class="close" data-dismiss="alert"></button>
+
+										You have some form errors. Please check below.
+
+									</div>
+
+									<div class="alert alert-success hide">
+
+										<button class="close" data-dismiss="alert"></button>
+
+										Your form validation is successful!
+
+									</div>
+								{{range $key1, $key := .schema_keys}}
+								{{$field :=(create_map3 $.schemas $key)}}
+								{{if $field.form.is_show }}                                
+									<div class="control-group">
+									{{if not $field.form.partial }}
+                                        
+                                        {{if eq_string $field.form.input_type "hidden"}}
+										
+                                        <input type="hidden" name="{{if eq_string $key "_id"}}id{{else}}{{$key}}{{end}}" value="{{ map_get $.row $key }}">
+                                        
+										{{else}}
+                                    
+										<label class="control-label">{{$field.name}} {{if $field.validation.required }}<span class="required">*</span>{{end}}</label>
+										
+										<div class="controls">
+										
+										{{if eq_string $field.form.input_type "text"}}
+											<input class="span12 m-wrap" type="text" name="{{$key}}" {{if $field.validation.required }}data-required="1"{{end}} value="{{ map_get $.row $key }}"/>
+                                        {{else if eq_string $field.form.input_type "number"}}
+                                            <input class="span12 m-wrap" type="text" name="{{$key}}" {{if $field.validation.required }}data-required="1"{{end}} id="mask_number2" value="{{ map_get $.row $key }}"/>
+                                        {{else if eq_string $field.form.input_type "currency"}}
+                                            <input class="span12 m-wrap" type="text" name="{{$key}}" {{if $field.validation.required }}data-required="1"{{end}} id="mask_currency" value="{{ map_get $.row $key }}"/>
+                                        {{else if eq_string $field.form.input_type "decimal"}}
+                                            <input class="span12 m-wrap" type="text" name="{{$key}}" {{if $field.validation.required }}data-required="1"{{end}} id="mask_decimal" value="{{ map_get $.row $key }}"/>
+                                        {{else if eq_string $field.form.input_type "textarea"}}
+                                            <textarea class="span12 m-wrap" name="{{$key}}" rows="6" {{if $field.validation.required }}data-required="1"{{end}}>{{get_val4textarea $field.data.type $.row $key}}</textarea>
+                                        {{else if eq_string $field.form.input_type "datetimepicker"}}
+                                            <div class="input-append date form_datetime" data-date="{{$.currentTime}}">
+
+												<input class="m-wrap" size="16" type="text" name="{{$key}}" {{if $field.validation.required }}data-required="1"{{end}} value="{{ (map_get $.row $key) }}">
+
+												<span class="add-on"><i class="icon-remove"></i></span>
+
+												<span class="add-on"><i class="icon-calendar"></i></span>
+
+											</div>
+										{{else if eq_string $field.form.input_type "select"}}
+											{{if or (not $field.form.select) (not $field.form.select.multiple) }}
+                                            <select class="span12 m-wrap"  id="select2_{{$key}}_sample6" name="{{$key}}" data-placeholder="">
+
+												<option value="">请选择...</option>
+												{{range $value, $name := create_map $field.form }}												
+   												<option value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}selected{{end}}>{{$name}}</option>
+                                                {{end}}
+
+											</select>
+											{{else}}
+                                            <select class="chosen span12"  id="select2_{{$key}}_sample6" name="{{$key}}[]" data-placeholder="" multiple="multiple">
+                                                <option value=""></option>
+												{{range $value, $name := create_map $field.form }}												
+   												<option value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}selected{{end}}>{{$name}}</option>
+                                                {{end}}
+											</select>
+											{{end}}
+										{{else if eq_string $field.form.input_type "select2"}}
+											{{if and $field.form.select $field.form.select.is_remote_load }}
+											<select class="span12 m-wrap" id="select2_{{$key}}_sample6" name="{{$key}}" data-placeholder="">	
+												{{range $value, $name := create_map2 $field.form $.row $key }}												
+   												<option value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}selected{{end}}>{{$name}}</option>
+                                                {{end}}												
+											</select>
+											{{else if or (not $field.form.select)  (not $field.form.select.multiple) }}											
+											<select class="span12 m-wrap"  id="select2_{{$key}}_sample6"  name="{{$key}}" data-placeholder="">
+
+												<option value="">请选择...</option>
+												{{range $value, $name := create_map2 $field.form $.row $key }}												
+   												<option value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}selected{{end}}>{{$name}}</option>
+                                                {{end}}
+
+											</select>
+                                            {{else}}
+                                            <select class="chosen span12" name="{{$key}}[]" data-placeholder="" multiple="multiple">
+                                                <option value=""></option>
+												{{range $value, $name := create_map2 $field.form $.row $key }}												
+   												<option value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}selected{{end}}>{{$name}}</option>
+                                                {{end}}
+											</select>
+											{{end}}
+										{{else if eq_string $field.form.input_type "radio"}}
+											{{range $value, $name := create_map $field.form }}
+                                            <label class="radio"><input type="radio" name="{{$key}}" value="{{$value}}" {{if eq_string $value (map_get $.row $key)}}checked{{end}} />{{$name}}</label>
+											{{end}}                                            
+										{{else if eq_string $field.form.input_type "ueditor"}}
+										    <script type="text/plain" id="{{$key}}" name="{{$key}}" style="width: 100%; height:250px;">{{ map_get $.row $key }}</script>
+										{{else if eq_string $field.form.input_type "ckeditor"}}
+										    <textarea class="span12 ckeditor m-wrap" name="{{$key}}" rows="6">{{ map_get $.row $key }}</textarea>
+                                        {{else if eq_string $field.form.input_type "file"}}
+                                            <div class="fileupload {{if is_empty4map $.row $key}}fileupload-new{{else}}fileupload-exists{{end}}" data-provides="fileupload">
+												{{if not is_empty4map $.row $key}}
+                                                <input type="hidden" value="" name="">
+												{{end}}
+												
+												<div class="fileupload-new thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+
+													<img src="{{.baseUrl}}service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;" alt="" />
+
+												</div>
+												<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                                    
+													{{if not is_empty4map $.row $key}}
+                                                    <img src="{{.baseUrl}}service/file/index?upload_path={{get_filepath $field.data $field.data.type}}<?php echo $path?>&id={{ map_get $.row $key }}&w=200&h=150" style="max-height: 150px;">
+                                                    {{else}}
+                                                    <img src="{{.baseUrl}}service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;">
+                                                    {{end}}
+                                                </div>
+												<div>
+													<span class="btn btn-file"><span class="fileupload-new">Select image</span>
+
+													<span class="fileupload-exists">Change</span>
+
+													<input type="file" name="{{$key}}" class="default" /></span>
+
+													<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+
+												</div>
+
+											</div>
+										{{else if eq_string $field.form.input_type "image"}}
+                                            <div class="fileupload {{if is_empty4map $.row $key}}fileupload-new{{else}}fileupload-exists{{end}}" data-provides="fileupload">
+                                                
+                                                <input type="hidden" value="{{ map_get $.row $key }}" name="{{$key}}">
+												
+												<div class="fileupload-new thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+
+													<img src="{{ map_get $.row $key }}" style="max-height: 150px;" alt="" />
+
+												</div>
+												<div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                              	            	    {{if not is_empty4map $.row $key}}
+                                                    <img src="{{ map_get $.row $key }}" style="max-height: 150px;">
+                                                    {{else}}
+                                                    <img src="{{.baseUrl}}service/file/index?id=noimg.png&w=200&h=150" style="max-height: 150px;">
+                                                    {{end}}
+                                                </div>
+
+											</div>
+
+                                            
+										{{end}}
+										</div>
+                                        
+                                        {{end}}
+                                    {{else}}
+										{{partial $.viewPath $field.form.partial $ | str2html }}										
+                                    {{end}}
+									</div>
+								{{end}}	
+                                {{end}}									
+									<div class="form-actions">
+									
+										<button type="submit" class="btn blue"><i class="icon-ok"></i> Save</button>
+
+										<button type="button" id="cancelBtn" class="btn">Cancel</button>
+
+									</div>
+
+								</form>
+
+								<!-- END FORM-->
+
+							</div>
+                        </div>                        
+						{{template "partials/js/form.phtml" .}}
+						<!-- END VALIDATION STATES-->

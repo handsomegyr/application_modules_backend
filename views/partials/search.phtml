@@ -1,0 +1,106 @@
+{{if .search.is_show}}
+
+						<!-- BEGIN Portlet PORTLET-->
+
+						<div class="portlet box grey">
+
+							<div class="portlet-title">
+
+								<div class="caption"><i class="icon-reorder"></i>检索</div>
+
+								<div class="tools">
+
+									<a href="javascript:;" class="collapse"></a>
+
+								</div>
+
+							</div>
+
+							<div class="portlet-body">
+
+								<div class="scroller2" data-always-visible="0" data-rail-visible="0">
+
+									<div class="row-fluid search-forms search-default">									
+									
+										<form action="#">
+											{{range $key1, $key := .schema_keys}}
+											{{$field :=(create_map3 $.schemas $key)}}
+											{{if $field.search.is_show}}	
+											<div class="clearfix margin-bottom-10">
+
+												<label>{{$field.name}}</label>
+												
+												{{if eq_string $field.search.input_type "select"}}	
+												<select class="span12 m-wrap" name="search_{{$key}}" id="search_{{$key}}" data-placeholder="">    
+    												<option value="">请选择...</option>
+													{{range $value, $name := create_map $field.search }}												
+    												<option value="{{$value}}" {{if in_array $value $field.search.defaultValues}}selected{{end}}>{{$name}}</option>
+                                                    {{end}}
+    											</select>											
+                                                
+												{{else if eq_string $field.search.input_type "datetimepicker"}}
+												{{if eq_string $field.search.condition_type "period"}}
+    											<div class="input-append date form_datetime" data-date="">
+
+    												<input class="m-wrap" size="16" type="text" name="search_{{$key}}_from" id="search_{{$key}}_from" value="">
+    
+    												<span class="add-on"><i class="icon-remove"></i></span>
+    
+    												<span class="add-on"><i class="icon-calendar"></i></span>
+    
+    											</div>
+        										~
+        										<div class="input-append date form_datetime" data-date="">
+
+    												<input class="m-wrap" size="16" type="text" name="search_{{$key}}_to" id="search_{{$key}}_to" value="">
+    
+    												<span class="add-on"><i class="icon-remove"></i></span>
+    
+    												<span class="add-on"><i class="icon-calendar"></i></span>
+    
+    											</div>
+    											{{end}}												
+												{{else if eq_string $field.search.input_type "number"}}
+												{{if eq_string $field.search.condition_type "period"}}
+    											<div class="input-append ">
+
+    												<input class="m-wrap" size="16" type="text" name="search_{{$key}}_from" id="search_{{$key}}_from" value="">
+    
+    
+    											</div>
+        										~
+        										<div class="input-append ">
+
+    												<input class="m-wrap" size="16" type="text" name="search_{{$key}}_to" id="search_{{$key}}_to" value="">
+    
+    											</div>
+    											{{end}}
+												{{else}}
+												<div class="input-icon left">
+
+													<i class="icon-map-marker"></i>
+
+													<input class="m-wrap span12" name="search_{{$key}}" id="search_{{$key}}" type="text" placeholder="{{$field.search.placeholder}}">
+
+												</div>
+												{{end}}
+
+											</div>
+											{{end}}	
+											{{end}}
+											<button id="btnSearch" class="btn blue btn-block">SEARCH <i class="m-icon-swapright m-icon-white"></i></button>
+										</form>
+
+									</div>
+
+								
+									
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- END Portlet PORTLET-->
+						{{template "partials/js/search.phtml" .}}	
+{{end}}								

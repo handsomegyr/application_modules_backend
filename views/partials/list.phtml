@@ -1,0 +1,66 @@
+						{{template "partials/search.phtml" .}}
+						
+						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+						<div class="portlet box light-grey">
+
+							<div class="portlet-title">
+
+								<div class="caption"><i class="icon-globe"></i>{{.formName}}列表</div>
+
+							</div>
+
+							<div class="portlet-body">
+
+								<div class="clearfix">
+
+									<div class="btn-group">
+
+										<button id="sample_editable_1_new" class="btn green">
+
+										Add New <i class="icon-plus"></i>
+
+										</button>
+    
+									</div>
+                                    
+                                    <div class="btn-group pull-right">
+
+										<button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i class="icon-angle-down"></i>
+
+										</button>
+
+										<ul class="dropdown-menu pull-right">
+
+											<li><a id="sample_editable_1_export_csv"  href="javascript:;">Export to Csv</a></li>
+
+										</ul>
+
+									</div>
+
+								</div>
+                               
+                                <table id="example" class="display table table-striped table-bordered table-hover table-full-width">
+                                    <thead>
+                                        <tr>
+											{{range $key1, $key := .schema_keys}}
+											{{$field :=(create_map3 $.schemas $key)}}
+											{{if $field.list.is_show }}
+                                            <th {{if $field.list.width }}width="{{$field.list.width}}"{{end}}>{{if $field.list.name }}{{$field.list.name}}{{else}}{{$field.name}}{{end}}</th>
+                                            {{end}}
+                                            {{end}}
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>                             
+                                </table>
+    							
+							</div>
+
+						</div>
+						<!--						
+						{{range $key, $partial := .partials4List}}
+						{{template "partials/empty.phtml" .}}
+						{{end}}
+						-->
+						<!-- END EXAMPLE TABLE PORTLET-->
+						{{template "partials/js/list.phtml" .}}

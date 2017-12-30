@@ -1,0 +1,24 @@
+
+                        <ul class="breadcrumb">
+
+							<li>
+
+								<i class="icon-home"></i>
+
+								<a href="{{.baseUrl}}admin/index/index">管理中心</a> 
+								{{if ne .breadcrumb.title ""}}
+								<i class="icon-angle-right"></i>
+                                {{end}}
+							</li>
+							{{if ne .breadcrumb.title ""}}							
+							<li>
+								<a href="{{.baseUrl}}{{.moduleName}}/{{.breadcrumb.url1}}">{{.breadcrumb.title}}</a>                                
+								{{if ne .breadcrumb.smalltitle ""}}
+								<i class="icon-angle-right"></i>
+                                {{end}}
+							</li>
+							{{if ne .breadcrumb.smalltitle ""}}
+							<li><a href="{{.baseUrl}}{{.moduleName}}/{{.breadcrumb.url2}}">{{.breadcrumb.smalltitle}}</a></li>
+                            {{end}}
+							{{end}}
+						</ul>

@@ -1,0 +1,38 @@
+                <div class="row-fluid">
+
+					<div class="span12 page-500">
+
+						<div class=" number">
+						{{if eq .msg_type 0 }}
+						200
+						{{else if eq .msg_type 1 }}
+						200
+						{{else if eq .msg_type 2 }}
+						200
+						{{else}}
+						500
+						{{end}}
+						</div>
+
+						<div class=" details">
+
+							<h3>{{.msg_detail}}</h3>
+							<p>
+								{{if .auto_redirect }}
+								如果您不做出选择，将在 <span id="spanSeconds">3</span> 秒后跳转到第一个链接地址。
+								{{end}}
+								<br />
+                            </p>
+							
+							<p>
+								{{range $key, $link := .links}}
+                                <a href="{{$link.href}}" {{if $link.target }}target="{{$link.target}}" {{end}}>{{$link.text}}</a>
+								{{end}}
+							</p>
+
+						</div>
+
+					</div>
+
+				</div>
+				

@@ -1,0 +1,93 @@
+       
+									{{range $key, $item := .privList}}
+									<!-- BEGIN SAMPLE TABLE PORTLET-->
+                                    <div class="portlet box blue">
+            							<div class="portlet-title">                    
+            								<div class="caption"><i class="icon-cogs"></i>{{$key}}</div>
+                                        </div>
+                                        <div class="portlet-body no-more-tables">
+                                            <table class="table-bordered table-striped table-condensed cf">
+												{{range $key1, $priv := $item.values}}
+                                                <tr>
+                                                    <td width="18%">
+                                                        <label class="checkbox">
+            											<input name="chkGroup" type="checkbox" value="checkbox" onclick="check('{{$priv.priv_list}}',this);" /> {{$priv.name}}
+            											</label>
+                                                        </td>
+                                                    <td>
+													{{range $priv_list, $list := $priv.priv}}
+                                                       <div style="width:20%;float:left;">
+                                                            <label class="checkbox" for="{{$priv_list}}">
+                                                            <input name="{{$item.field}}[]" type="checkbox"  value="{{$priv_list}}" id="{{$priv_list}}" {{if $list.cando}}  checked  {{end}} onclick="checkrelevance('{{$list.relevance}}', '{{$priv_list}}')" title="{{$list.relevance}}"/>
+															{{$list.name}}
+                                                            </label>
+                                                        </div>
+                                                    {{end}}
+                                                    </td>
+                                                </tr>
+                                                {{end}}
+                                            </table>
+                                        </div>
+                                    </div>
+            						<!-- END SAMPLE TABLE PORTLET-->
+									{{end}}
+                                    <input type="checkbox" name="checkall" value="checkbox" onclick="checkAll(this.form, this);" class="checkbox" />全选&nbsp;&nbsp;&nbsp;&nbsp;
+<script>
+function checkAll(frm, checkbox)
+{
+	console.info(frm);
+	for (i = 0; i < frm.elements.length; i++)
+	{
+		{{range $key, $item := .privList}}
+		if (frm.elements[i].name == '{{$item.field}}[]' || frm.elements[i].name == 'chkGroup')
+		{
+			frm.elements[i].checked  = checkbox.checked;
+			jQuery.uniform.update(frm.elements[i]);
+		}
+		{{end}}
+	}
+}
+
+function check(list, obj)
+{
+	var frm = obj.form;
+	
+	for (i = 0; i < frm.elements.length; i++)
+	{
+		{{range $key, $item := .privList}}
+		if (frm.elements[i].name == "{{$item.field}}[]")
+		{
+			var regx = new RegExp(frm.elements[i].value + "(?!_)", "i");
+			if (list.search(regx) > -1) {
+				frm.elements[i].checked  = obj.checked ;
+				jQuery.uniform.update(frm.elements[i]);
+			}
+		}
+		{{end}}
+	}
+}
+
+function checkrelevance(relevance, priv_list)
+{
+	if(document.getElementById(priv_list).checked  && relevance != '')
+	{
+		document.getElementById(relevance).checked =true;
+		jQuery.uniform.update(document.getElementById(relevance));
+	}
+	else
+	{
+		var ts=document.getElementsByTagName("input");
+	
+		for (var i=0; i<ts.length;i++)
+		{
+			var text=ts[i].getAttribute("title");
+		
+			if( text == priv_list) 
+			{
+				document.getElementById(ts[i].value).checked  = false;
+				jQuery.uniform.update(document.getElementById(ts[i].value));
+			}
+		}
+	}
+}
+</script>

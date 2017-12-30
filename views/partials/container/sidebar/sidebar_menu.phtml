@@ -1,0 +1,84 @@
+
+			<ul class="page-sidebar-menu">
+
+				<li>
+
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+					<div class="sidebar-toggler hidden-phone"></div>
+
+					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+				</li>
+
+				<li>
+
+					<!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+
+					<form class="sidebar-search">
+
+						<div class="input-box">
+
+							<a href="javascript:;" class="remove"></a>
+
+							<input type="text" placeholder="Search..." />
+
+							<input type="button" class="submit" value=" " />
+
+						</div>
+
+					</form>
+
+					<!-- END RESPONSIVE QUICK SEARCH FORM -->
+
+				</li>
+
+				<li class="start ">
+
+					<a href="{{.baseUrl}}admin/index/index">
+
+					<i class="icon-home"></i> 
+
+					<span class="title">Dashboard</span>
+
+					</a>
+
+				</li>
+				{{$index := 0}}
+				{{range $index1, $menukey := (create_slice .sidebarmenu.sort_keys "pid")}}
+				{{$menu :=(create_map3 $.sidebarmenu.menus $menukey)}}				
+				{{if $menu.cando }}
+				<li class="{{if $menu.is_active}}active{{end}} ">
+					<a href="javascript:;">
+
+					<i class="{{ icons1_get $index1}}"></i> 
+
+					<span class="title">{{$menu.name}}</span>
+
+					<span class="arrow {{if $menu.is_active}}open{{end}}"></span>
+
+					</a>
+
+					<ul class="sub-menu">
+						{{range $index2, $submenukey := (create_slice $.sidebarmenu.sort_keys $menukey)}}
+						{{$priv :=(create_map4 $menu.priv $submenukey)}}
+						{{if $priv.cando }}
+						<li class="{{if $priv.is_active}}active{{end}} " >
+
+							<a href="{{url_get $.baseUrl $priv.url}}">
+
+							<i class="{{ icons2_get $index2}}"></i>
+
+							{{$priv.name}}
+							</a>
+
+						</li>
+                        {{end}}
+                        {{end}}
+					</ul>
+
+				</li>
+				{{end}}
+                {{end}}
+
+			</ul>                        
