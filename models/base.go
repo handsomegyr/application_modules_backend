@@ -191,6 +191,12 @@ func (t *Base) executeQuery(sql string, args []interface{}, method string) (num 
 	o := orm.NewOrm()
 	//fmt.Println(sql, args)
 	if method == "query" {
+
+		if _, ok := args["for_update"]; ok {
+			sql = sql + "  FOR UPDATE "
+			delete(args, "for_update")
+		}
+
 		num, err := o.Raw(sql, args...).Values(&maps)
 		if err != nil {
 			panic(err)
