@@ -343,7 +343,7 @@ func (t *Base) getSqlAndConditions4FindOne(query []map[string]interface{}) map[s
 		conditions["bind"] = make(map[string]interface{})
 	}
 	tableName := t.TableName
-	phql := fmt.Sprintf("SELECT * FROM [%s] WHERE %s ", tableName, conditions["conditions"])
+	phql := fmt.Sprintf("SELECT * FROM [%s] WHERE %s limit 1", tableName, conditions["conditions"])
 	ret := make(map[string]interface{})
 	ret["sql"] = phql
 	ret["conditions"] = conditions
