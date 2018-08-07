@@ -168,9 +168,9 @@ var List = function () {
 			   {{range $key, $field := .schemas}} 
 			   {{if $field.search.is_show }}
 			   {{if eq_string $field.search.condition_type "period"}}			   			   
-			   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}_from').val()+'|'+$('#search_{{$key}}_to').val());
+			   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}_from').val()?$('#search_{{$key}}_from').val():""+'|'+$('#search_{{$key}}_to').val()?$('#search_{{$key}}_to').val():"");
 			   {{else}}
-			   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}').val());
+			   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}').val()?$('#search_{{$key}}').val():"");
 			   {{end}}
 			   {{end}}
 			   {{end}}
@@ -207,9 +207,9 @@ var List = function () {
            		   	   {{range $key, $field := .schemas}} 
               		   {{if $field.search.is_show }}
 					   {{if eq_string $field.search.condition_type "period"}}
-    		           d[{{$key}}] = encodeURIComponent($('#search_{{$key}}_from').val()+'|'+$('#search_{{$key}}_to').val());
+    		           d[{{$key}}] = encodeURIComponent($('#search_{{$key}}_from').val()?$('#search_{{$key}}_from').val():""+'|'+$('#search_{{$key}}_to').val()?$('#search_{{$key}}_to').val():"");
 					   {{else}}
-					   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}').val());
+					   d[{{$key}}] = encodeURIComponent($('#search_{{$key}}').val()?$('#search_{{$key}}').val():"");
     		           {{end}}
     		           {{end}}
     		           {{end}}
